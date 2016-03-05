@@ -85,7 +85,10 @@ locale.setlocale(locale.LC_ALL, locale.getdefaultlocale())  # seems necessary fo
 username = getpass.getuser()
 tb_config = configparser.ConfigParser()
 tb_config.read("/home/" + username + "/.thunderbird/profiles.ini")
-tb_profile = tb_config['Profile0']["Path"]  # TODO Parse configfile to determine the correct profile.
+tb_profile = tb_config["Profile0"]["Path"]  # Use Profile0
+for section in tb_config.sections():  # Find the default Profile
+    if "Default" in section and section["Default"] == "1":
+        tb_profile = section["Path"]  # Use the default Profile
 
 
 def parse_tb_prefs(pref_path):
